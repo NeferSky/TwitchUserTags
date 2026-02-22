@@ -1,0 +1,19 @@
+body {
+  font-family: Arial, sans-serif;
+  width: 500px;
+}
+
+textarea {
+  width: 95%;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 10px 20px;
+  cursor: pointer;
+  color: white;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 5px;
+}

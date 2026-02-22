@@ -1,0 +1,7 @@
+{
+  "user1": "friend",
+  "user2": "stupid",
+  "user3": "user1's second acc",
+  "user4": "John",
+  "user5": "Jane"
+}
