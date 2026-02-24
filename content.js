@@ -23,26 +23,45 @@ function addUsertagSpan(elem, userTag) {
 	}
 }
 
-// Основная работа - обновление настроек, поиск элементов для патча и патч
-function addUserTags() {
-	// Вычитываем из хранилища сохрненные ранее настройки
-	readTags();
-
-	console.log('[addUserTags] twitchUserTags='+JSON.stringify(twitchUserTags));
+// Основная работа - поиск элементов для патча в чате и патч
+function addChatUserTags() {
+	console.log('[addChatUserTags] twitchUserTags='+JSON.stringify(twitchUserTags));
     // Находим все элементы span с классом 'chat-line__username-container'
     const chatSpans = document.querySelectorAll('span.chat-author__display-name');
     // Добавляем в каждый из них новый span-элемент
     chatSpans.forEach(elem => {
-		//console.log('addUserTags elem.textContent='+elem.textContent);
+		//console.log('addChatUserTags elem.textContent='+elem.textContent);
 		if ((twitchUserTags) && (Object.hasOwn(twitchUserTags, elem.textContent))) {
-			console.log('[addUserTags] add '+twitchUserTags[elem.textContent]+' to '+elem.textContent);
+			console.log('[addChatUserTags] add '+twitchUserTags[elem.textContent]+' to '+elem.textContent);
 			addUsertagSpan(elem, twitchUserTags[elem.textContent]);
 		}
     });
 }
 
+// Основная работа - поиск элементов для патча в всплывающих панелях и патч
+function addPopupUserTags() {
+	console.log('[addPopupUserTags] twitchUserTags='+JSON.stringify(twitchUserTags));
+    // Находим все элементы h4 с классом 'CoreText-sc-1txzju1-0'
+    const chatSpans = document.querySelectorAll('h4.CoreText-sc-1txzju1-0');
+    // Добавляем в каждый из них новый span-элемент
+    chatSpans.forEach(elem => {
+		//console.log('addPopupUserTags elem.textContent='+elem.textContent);
+		if ((twitchUserTags) && (Object.hasOwn(twitchUserTags, elem.textContent))) {
+			console.log('[addPopupUserTags] add '+twitchUserTags[elem.textContent]+' to '+elem.textContent);
+			addUsertagSpan(elem, twitchUserTags[elem.textContent]);
+		}
+    });
+}
+
+function addUserTags() {
+	addChatUserTags();
+	addPopupUserTags();
+}
+
 // Инициализация - цикл основной работы для существующих элементов
 function initTags() {
+	// Вычитываем из хранилища сохрненные ранее настройки
+	readTags();
     addUserTags();
 }
 
@@ -52,6 +71,9 @@ const observer = new MutationObserver((mutations) => {
         clearTimeout(timeout);
     }
     timeout = setTimeout(() => {
+		// Вычитываем из хранилища сохрненные ранее настройки
+		readTags();
+		// Для изменений делаем основную работу
 		mutations.forEach(() => {
 			addUserTags(); // Вызываем функцию при каждом изменении
 		});
